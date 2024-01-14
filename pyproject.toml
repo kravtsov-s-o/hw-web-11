@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "hw-web-11"
+version = "0.0.1"
+description = "RST API Contacts"
+authors = ["s.kravtsov <s.kravtsov@hotmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.109.0"
+uvicorn = {extras = ["standard"], version = "^0.25.0"}
+SQLAlchemy = "^2.0.25"
+psycopg2-binary = "^2.9.9"
+alembic = "^1.13.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
