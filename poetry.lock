@@ -279,7 +279,7 @@ typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 
 [[package]]
 name = "python-dotenv"
-version = "1.0.0"
+version = "1.0.1"
 description = "Read key-value pairs from a .env file and set them as environment variables"
 category = "main"
 optional = false
@@ -469,7 +469,7 @@ python-versions = ">=3.8"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "fe0a50aa57014a4cbdb2640cfedf32b2d8302c6d7d3f4ae3f1a16ce9476f1529"
+content-hash = "4828413dab312eb735daecc835c03c1fc998518861b30d32b5376b549f7bae73"
 
 [metadata.files]
 alembic = []
