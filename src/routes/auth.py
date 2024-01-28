@@ -47,7 +47,19 @@ async def login(body: OAuth2PasswordRequestForm = Depends(), db: Session = Depen
 async def refresh_token(credentials: HTTPAuthorizationCredentials = Security(security), db: Session = Depends(get_db)):
     token = credentials.credentials
     email = await auth_services.decode_refresh_token(token)
-    user = await repository_users.get_user_by_email(email, db)
+    user = self.r.get(f'user:{email}')
+
+    if user is None:
+        user = await repository_users.get_user_by_email(email, db)
+
+        if user is None:
+            raise credentials_exception
+
+        self.r.set(f"user:{email}", pickle.dumps(user))
+        self.r.expire(f'user:{email}', 900)
+
+    else:
+        user = pickle.loads(user)
     if user.refresh_token != token:
         await repository_users.update_token(user, None, db)
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token")
@@ -61,7 +73,19 @@ async def refresh_token(credentials: HTTPAuthorizationCredentials = Security(sec
 @router.get('/confirmed_email/{token}')
 async def confirmed_email(token: str, db: Session = Depends(get_db)):
     email = await auth_services.get_email_from_token(token)
-    user = await repository_users.get_user_by_email(email, db)
+    user = self.r.get(f'user:{email}')
+
+    if user is None:
+        user = await repository_users.get_user_by_email(email, db)
+
+        if user is None:
+            raise credentials_exception
+
+        self.r.set(f"user:{email}", pickle.dumps(user))
+        self.r.expire(f'user:{email}', 900)
+
+    else:
+        user = pickle.loads(user)
     if user is None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Verification error')
     if user.confirmed:
