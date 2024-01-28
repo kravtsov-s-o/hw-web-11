@@ -1,4 +1,16 @@
 [[package]]
+name = "aiosmtplib"
+version = "2.0.2"
+description = "asyncio SMTP client"
+category = "main"
+optional = false
+python-versions = ">=3.7,<4.0"
+
+[package.extras]
+uvloop = ["uvloop (>=0.14,<0.15)", "uvloop (>=0.14,<0.15)", "uvloop (>=0.17,<0.18)"]
+docs = ["sphinx (>=5.3.0,<6.0.0)", "sphinx_autodoc_typehints (>=1.7.0,<2.0.0)"]
+
+[[package]]
 name = "alembic"
 version = "1.13.1"
 description = "A database migration tool for SQLAlchemy."
@@ -54,6 +66,14 @@ tests = ["pytest (>=3.2.1,!=3.3.0)"]
 typecheck = ["mypy"]
 
 [[package]]
+name = "blinker"
+version = "1.7.0"
+description = "Fast, simple object-to-object and broadcast signaling"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
 name = "cffi"
 version = "1.16.0"
 description = "Foreign Function Interface for Python calling C code."
@@ -105,6 +125,23 @@ test = ["pytest (>=6.2.0)", "pytest-benchmark", "pytest-cov", "pytest-xdist", "p
 test-randomorder = ["pytest-randomly"]
 
 [[package]]
+name = "dnspython"
+version = "2.5.0"
+description = "DNS toolkit"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+dev = ["black (>=23.1.0)", "coverage (>=7.0)", "flake8 (>=5.0.3)", "mypy (>=1.0.1)", "pylint (>=2.7)", "pytest-cov (>=3.0.0)", "pytest (>=6.2.5)", "sphinx (>=7.0.0)", "twine (>=4.0.0)", "wheel (>=0.41.0)"]
+dnssec = ["cryptography (>=41)"]
+doh = ["h2 (>=4.1.0)", "httpcore (>=0.17.3)", "httpx (>=0.25.1)"]
+doq = ["aioquic (>=0.9.20)"]
+idna = ["idna (>=2.1)"]
+trio = ["trio (>=0.14)"]
+wmi = ["wmi (>=1.5.1)"]
+
+[[package]]
 name = "ecdsa"
 version = "0.18.0"
 description = "ECDSA cryptographic signature library (pure python)"
@@ -118,6 +155,18 @@ six = ">=1.9.0"
 [package.extras]
 gmpy = ["gmpy"]
 gmpy2 = ["gmpy2"]
+
+[[package]]
+name = "email-validator"
+version = "2.1.0.post1"
+description = "A robust email address syntax and deliverability validation library."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+dnspython = ">=2.0.0"
+idna = ">=2.0.0"
 
 [[package]]
 name = "exceptiongroup"
@@ -145,6 +194,27 @@ typing-extensions = ">=4.8.0"
 
 [package.extras]
 all = ["email-validator (>=2.0.0)", "httpx (>=0.23.0)", "itsdangerous (>=1.1.0)", "jinja2 (>=2.11.2)", "orjson (>=3.2.1)", "pydantic-extra-types (>=2.0.0)", "pydantic-settings (>=2.0.0)", "python-multipart (>=0.0.5)", "pyyaml (>=5.3.1)", "ujson (>=4.0.1,!=4.0.2,!=4.1.0,!=4.2.0,!=4.3.0,!=5.0.0,!=5.1.0)", "uvicorn[standard] (>=0.12.0)"]
+
+[[package]]
+name = "fastapi-mail"
+version = "1.4.1"
+description = "Simple lightweight mail library for FastApi"
+category = "main"
+optional = false
+python-versions = ">=3.8.1,<4.0"
+
+[package.dependencies]
+aiosmtplib = ">=2.0,<3.0"
+blinker = ">=1.5,<2.0"
+email-validator = ">=2.0,<3.0"
+Jinja2 = ">=3.0,<4.0"
+pydantic = ">=2.0,<3.0"
+pydantic_settings = ">=2.0,<3.0"
+starlette = ">=0.24,<1.0"
+
+[package.extras]
+httpx = ["httpx[httpx] (>=0.23,<0.24)"]
+redis = ["redis[redis] (>=4.3,<5.0)"]
 
 [[package]]
 name = "greenlet"
@@ -184,6 +254,20 @@ description = "Internationalized Domain Names in Applications (IDNA)"
 category = "main"
 optional = false
 python-versions = ">=3.5"
+
+[[package]]
+name = "jinja2"
+version = "3.1.3"
+description = "A very fast and expressive template engine."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+MarkupSafe = ">=2.0"
+
+[package.extras]
+i18n = ["Babel (>=2.7)"]
 
 [[package]]
 name = "mako"
@@ -276,6 +360,18 @@ python-versions = ">=3.7"
 
 [package.dependencies]
 typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
+
+[[package]]
+name = "pydantic-settings"
+version = "2.1.0"
+description = "Settings management using Pydantic"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+pydantic = ">=2.3.0"
+python-dotenv = ">=0.21.0"
 
 [[package]]
 name = "python-dotenv"
@@ -469,24 +565,30 @@ python-versions = ">=3.8"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "4828413dab312eb735daecc835c03c1fc998518861b30d32b5376b549f7bae73"
+content-hash = "f117b9144e39d9d51bb831ba813a9f35db801f46ef128d31cb44012908220a99"
 
 [metadata.files]
+aiosmtplib = []
 alembic = []
 annotated-types = []
 anyio = []
 bcrypt = []
+blinker = []
 cffi = []
 click = []
 colorama = []
 cryptography = []
+dnspython = []
 ecdsa = []
+email-validator = []
 exceptiongroup = []
 fastapi = []
+fastapi-mail = []
 greenlet = []
 h11 = []
 httptools = []
 idna = []
+jinja2 = []
 mako = []
 markupsafe = []
 passlib = []
@@ -495,6 +597,7 @@ pyasn1 = []
 pycparser = []
 pydantic = []
 pydantic-core = []
+pydantic-settings = []
 python-dotenv = []
 python-jose = []
 python-multipart = []
