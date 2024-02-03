@@ -82,6 +82,14 @@ optional = false
 python-versions = ">=3.8"
 
 [[package]]
+name = "certifi"
+version = "2024.2.2"
+description = "Python package for providing Mozilla's CA Bundle."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "cffi"
 version = "1.16.0"
 description = "Foreign Function Interface for Python calling C code."
@@ -102,6 +110,22 @@ python-versions = ">=3.7"
 
 [package.dependencies]
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
+
+[[package]]
+name = "cloudinary"
+version = "1.38.0"
+description = "Python and Django SDK for Cloudinary"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+certifi = "*"
+six = "*"
+urllib3 = ">=1.26.5"
+
+[package.extras]
+dev = ["tox"]
 
 [[package]]
 name = "colorama"
@@ -544,6 +568,20 @@ optional = false
 python-versions = ">=3.8"
 
 [[package]]
+name = "urllib3"
+version = "2.2.0"
+description = "HTTP library with thread-safe connection pooling, file post, and more."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+brotli = ["brotli (>=1.0.9)", "brotlicffi (>=0.8.0)"]
+h2 = ["h2 (>=4,<5)"]
+socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
+zstd = ["zstandard (>=0.18.0)"]
+
+[[package]]
 name = "uvicorn"
 version = "0.25.0"
 description = "The lightning-fast ASGI server."
@@ -600,7 +638,7 @@ python-versions = ">=3.8"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "b55bc8211be293804dcb8b6985c818fd7ca59d9f6ee343db61ffee62f2942885"
+content-hash = "9439cf160a933fd85afb5bf332adf9206a523261def6e28474ae33133490fcc7"
 
 [metadata.files]
 aiosmtplib = []
@@ -610,8 +648,10 @@ anyio = []
 async-timeout = []
 bcrypt = []
 blinker = []
+certifi = []
 cffi = []
 click = []
+cloudinary = []
 colorama = []
 cryptography = []
 dnspython = []
@@ -646,6 +686,7 @@ sniffio = []
 sqlalchemy = []
 starlette = []
 typing-extensions = []
+urllib3 = []
 uvicorn = []
 uvloop = []
 watchfiles = []

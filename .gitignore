@@ -51,6 +51,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
+postgres-data/
 
 # Translations
 *.mo
