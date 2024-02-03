@@ -54,6 +54,14 @@ test = ["anyio", "coverage[toml] (>=7)", "exceptiongroup (>=1.2.0)", "hypothesis
 trio = ["trio (>=0.23)"]
 
 [[package]]
+name = "async-timeout"
+version = "4.0.3"
+description = "Timeout context manager for asyncio programs"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
 name = "bcrypt"
 version = "4.1.2"
 description = "Modern password hashing for your software and your servers"
@@ -194,6 +202,18 @@ typing-extensions = ">=4.8.0"
 
 [package.extras]
 all = ["email-validator (>=2.0.0)", "httpx (>=0.23.0)", "itsdangerous (>=1.1.0)", "jinja2 (>=2.11.2)", "orjson (>=3.2.1)", "pydantic-extra-types (>=2.0.0)", "pydantic-settings (>=2.0.0)", "python-multipart (>=0.0.5)", "pyyaml (>=5.3.1)", "ujson (>=4.0.1,!=4.0.2,!=4.1.0,!=4.2.0,!=4.3.0,!=5.0.0,!=5.1.0)", "uvicorn[standard] (>=0.12.0)"]
+
+[[package]]
+name = "fastapi-limiter"
+version = "0.1.6"
+description = "A request rate limiter for fastapi"
+category = "main"
+optional = false
+python-versions = ">=3.9,<4.0"
+
+[package.dependencies]
+fastapi = "*"
+redis = ">=4.2.0rc1"
 
 [[package]]
 name = "fastapi-mail"
@@ -423,6 +443,21 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "redis"
+version = "5.1.0b3"
+description = "Python client for Redis database and key-value store"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+async-timeout = ">=4.0.3"
+
+[package.extras]
+hiredis = ["hiredis (>=1.0.0)"]
+ocsp = ["cryptography (>=36.0.1)", "pyopenssl (==20.0.1)", "requests (>=2.26.0)"]
+
+[[package]]
 name = "rsa"
 version = "4.9"
 description = "Pure-Python RSA implementation"
@@ -565,13 +600,14 @@ python-versions = ">=3.8"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "f117b9144e39d9d51bb831ba813a9f35db801f46ef128d31cb44012908220a99"
+content-hash = "b55bc8211be293804dcb8b6985c818fd7ca59d9f6ee343db61ffee62f2942885"
 
 [metadata.files]
 aiosmtplib = []
 alembic = []
 annotated-types = []
 anyio = []
+async-timeout = []
 bcrypt = []
 blinker = []
 cffi = []
@@ -583,6 +619,7 @@ ecdsa = []
 email-validator = []
 exceptiongroup = []
 fastapi = []
+fastapi-limiter = []
 fastapi-mail = []
 greenlet = []
 h11 = []
@@ -602,6 +639,7 @@ python-dotenv = []
 python-jose = []
 python-multipart = []
 pyyaml = []
+redis = []
 rsa = []
 six = []
 sniffio = []

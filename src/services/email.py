@@ -4,7 +4,7 @@ from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
 from pydantic import EmailStr, BaseModel
 from typing import List
 from src.services.auth import auth_services
-from src.settings import settings
+from src.settings.settings import settings
 
 
 class EmailSchema(BaseModel):
