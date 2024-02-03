@@ -1,7 +1,5 @@
 from typing import Optional
-import pickle
 
-import redis
 from jose import JWTError, jwt
 from fastapi import HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer
@@ -11,19 +9,12 @@ from sqlalchemy.orm import Session
 
 from src.database.db import get_db
 from src.repository import users as repository_users
-from dotenv import load_dotenv
+from src.settings import settings
 
-load_dotenv()
-
-SECRET_KEY = os.getenv('SECRET_KEY')
-ALGORITHM = os.getenv('ALGORITHM')
 
 class Auth:
     pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
-    SECRET_KEY = SECRET_KEY
-    ALGORITHM = ALGORITHM
     oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/api/auth/login')
-    r = redis.Redis(host='localhost', port=6379, db=0)
 
     def verify_password(self, plain_password, hashed_password):
         return self.pwd_context.verify(plain_password, hashed_password)
@@ -40,7 +31,7 @@ class Auth:
             expire = datetime.utcnow() + timedelta(minutes=15)
 
         to_encode.update({'iat': datetime.utcnow(), 'exp': expire, 'scope': 'access_token'})
-        encoded_access_token = jwt.encode(to_encode, self.SECRET_KEY, algorithm=self.ALGORITHM)
+        encoded_access_token = jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
 
         return encoded_access_token
 
@@ -53,13 +44,13 @@ class Auth:
             expire = datetime.utcnow() + timedelta(days=7)
 
         to_encode.update({'iat': datetime.utcnow(), 'exp': expire, 'scope': 'refresh_token'})
-        encoded_refresh_token = jwt.encode(to_encode, self.SECRET_KEY, algorithm=self.ALGORITHM)
+        encoded_refresh_token = jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
 
         return encoded_refresh_token
 
     async def decode_refresh_token(self, refresh_token: str):
         try:
-            payload = jwt.decode(refresh_token, self.SECRET_KEY, algorithms=[self.ALGORITHM])
+            payload = jwt.decode(refresh_token, settings.secret_key, algorithms=[settings.algorithm])
             if payload['scope'] == 'refresh_token':
                 email = payload['sub']
                 return email
@@ -76,7 +67,7 @@ class Auth:
 
         try:
             # Decode JWT
-            payload = jwt.decode(token, self.SECRET_KEY, algorithms=[self.ALGORITHM])
+            payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
             if payload['scope'] == 'access_token':
                 email = payload['sub']
                 if email is None:
@@ -86,19 +77,10 @@ class Auth:
         except JWTError as e:
             raise credentials_exception
 
-        user = self.r.get(f'user:{email}')
+        user = await repository_users.get_user_by_email(email, db)
 
         if user is None:
-            user = await repository_users.get_user_by_email(email, db)
-
-            if user is None:
-                raise credentials_exception
-
-            self.r.set(f"user:{email}", pickle.dumps(user))
-            self.r.expire(f'user:{email}', 900)
-
-        else:
-            user = pickle.loads(user)
+            raise credentials_exception
 
         return user
 
@@ -106,17 +88,18 @@ class Auth:
         to_encode = data.copy()
         expire = datetime.utcnow() + timedelta(days=7)
         to_encode.update({'iat': datetime.utcnow(), 'exp': expire})
-        token = jwt.encode(to_encode, self.SECRET_KEY, algorithm=self.ALGORITHM)
+        token = jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
         return token
 
     async def get_email_from_token(self, token: str):
         try:
-            payload = jwt.decode(token, self.SECRET_KEY, algorithms=[self.ALGORITHM])
+            payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
             email = payload['sub']
             return email
         except JWTError as e:
             print(e)
-            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail='Invalid token for email verification')
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                                detail='Invalid token for email verification')
 
 
 auth_services = Auth()

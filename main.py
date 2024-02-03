@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from pathlib import Path
 
 from src.routes import contacts, auth
 

@@ -54,14 +54,6 @@ test = ["anyio", "coverage[toml] (>=7)", "exceptiongroup (>=1.2.0)", "hypothesis
 trio = ["trio (>=0.23)"]
 
 [[package]]
-name = "async-timeout"
-version = "4.0.3"
-description = "Timeout context manager for asyncio programs"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[[package]]
 name = "bcrypt"
 version = "4.1.2"
 description = "Modern password hashing for your software and your servers"
@@ -431,21 +423,6 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
-name = "redis"
-version = "5.0.1"
-description = "Python client for Redis database and key-value store"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[package.dependencies]
-async-timeout = {version = ">=4.0.2", markers = "python_full_version <= \"3.11.2\""}
-
-[package.extras]
-hiredis = ["hiredis (>=1.0.0)"]
-ocsp = ["cryptography (>=36.0.1)", "pyopenssl (==20.0.1)", "requests (>=2.26.0)"]
-
-[[package]]
 name = "rsa"
 version = "4.9"
 description = "Pure-Python RSA implementation"
@@ -588,14 +565,13 @@ python-versions = ">=3.8"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "20f4365bdaa79a7fcd76f9306733286cf55b535f73fdbd0862a4fbbcdc536d1e"
+content-hash = "f117b9144e39d9d51bb831ba813a9f35db801f46ef128d31cb44012908220a99"
 
 [metadata.files]
 aiosmtplib = []
 alembic = []
 annotated-types = []
 anyio = []
-async-timeout = []
 bcrypt = []
 blinker = []
 cffi = []
@@ -626,7 +602,6 @@ python-dotenv = []
 python-jose = []
 python-multipart = []
 pyyaml = []
-redis = []
 rsa = []
 six = []
 sniffio = []
