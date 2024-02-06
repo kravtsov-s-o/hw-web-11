@@ -1,5 +1,3 @@
-from typing import List
-
 from fastapi import APIRouter, HTTPException, Depends, status, Security, BackgroundTasks, Request
 from fastapi.security import OAuth2PasswordRequestForm, HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
@@ -71,7 +69,8 @@ async def confirmed_email(token: str, db: Session = Depends(get_db)):
 
 
 @router.post('/request_email')
-async def request_email(body: RequestEmail, background_tasks: BackgroundTasks, request: Request, db: Session = Depends(get_db)):
+async def request_email(body: RequestEmail, background_tasks: BackgroundTasks, request: Request,
+                        db: Session = Depends(get_db)):
     user = await repository_users.get_user_by_email(body.email, db)
 
     if user.confirmed:

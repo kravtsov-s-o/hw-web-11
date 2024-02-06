@@ -2,6 +2,9 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
+    """
+    Application settings
+    """
     postgres_name: str
     postgres_host: str
     postgres_port: int
