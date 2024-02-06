@@ -9,3 +9,7 @@ Python - FastAPI. App REST API
 - Add email verification
 - CORS
 - Cloudinary
+
+# hw-web-14
+- Add Doc
+- Add Tests
