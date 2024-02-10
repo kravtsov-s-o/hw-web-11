@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_limiter import FastAPILimiter
 
-from src.routes import contacts, auth, users
+from src.routes import auth, contacts, users
 from src.settings.settings import settings
 
 app = FastAPI()

@@ -13,7 +13,21 @@ security = HTTPBearer()
 
 
 @router.post('/signup', response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-async def signup(body: UserModel, background_tasks: BackgroundTasks, request: Request, db: Session = Depends(get_db)):
+async def signup(body: UserModel, background_tasks: BackgroundTasks, request: Request, db: Session = Depends(get_db)) -> dict:
+    """
+    Registration user
+
+    :param body: User model
+    :type body: UserModel
+    :param background_tasks: BackgroundTask
+    :type background_tasks: BackgroundTask
+    :param request: Form Request
+    :type request: Request
+    :param db: Session Database
+    :type db: Session
+    :return: dict with keys user (UserModel) and detail (message)
+    :rtype: dict
+    """
     exist_user = await repository_users.get_user_by_email(body.email, db)
     if exist_user:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Account already exists")
@@ -24,8 +38,18 @@ async def signup(body: UserModel, background_tasks: BackgroundTasks, request: Re
 
 
 @router.post('/login', response_model=TokenModel)
-async def login(body: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    # Attention - Field Username, but you need enter email
+async def login(body: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)) -> dict:
+    """
+    User authentication
+    ! Attention - Field Username, but you need enter email !
+
+    :param body: user information
+    :type body: OAuth2PasswordRequestForm
+    :param db: connection to database
+    :type db: Session
+    :return: dictionary with keys access_token, refresh_token and token_type
+    :rtype: dict
+    """
     user = await repository_users.get_user_by_email(body.username, db)
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email")
@@ -42,7 +66,17 @@ async def login(body: OAuth2PasswordRequestForm = Depends(), db: Session = Depen
 
 
 @router.get('/refresh_token', response_model=TokenModel)
-async def refresh_token(credentials: HTTPAuthorizationCredentials = Security(security), db: Session = Depends(get_db)):
+async def refresh_token(credentials: HTTPAuthorizationCredentials = Security(security), db: Session = Depends(get_db)) -> dict:
+    """
+    Refreshes the access token using a valid refresh token.
+
+    :param credentials: HTTP Authorization credentials containing the refresh token.
+    :type credentials: HTTPAuthorizationCredentials
+    :param db: Database session.
+    :type db: Session
+    :return: New access and refresh tokens along with the token type.
+    :rtype: dict
+    """
     token = credentials.credentials
     email = await auth_services.decode_refresh_token(token)
     user = await repository_users.get_user_by_email(email, db)
@@ -57,7 +91,17 @@ async def refresh_token(credentials: HTTPAuthorizationCredentials = Security(sec
 
 
 @router.get('/confirmed_email/{token}')
-async def confirmed_email(token: str, db: Session = Depends(get_db)):
+async def confirmed_email(token: str, db: Session = Depends(get_db)) -> dict:
+    """
+    Confirms the user's email based on the provided confirmation token.
+
+    :param token: Confirmation token.
+    :type token: str
+    :param db: Database session.
+    :type db: Session
+    :return: Message indicating the result of the email confirmation.
+    :rtype: dict
+    """
     email = await auth_services.get_email_from_token(token)
     user = await repository_users.get_user_by_email(email, db)
     if user is None:
@@ -70,7 +114,21 @@ async def confirmed_email(token: str, db: Session = Depends(get_db)):
 
 @router.post('/request_email')
 async def request_email(body: RequestEmail, background_tasks: BackgroundTasks, request: Request,
-                        db: Session = Depends(get_db)):
+                        db: Session = Depends(get_db)) -> dict:
+    """
+    Sends a confirmation email or notifies the user if the email is already confirmed.
+
+    :param body: Request body containing the email.
+    :type body: RequestEmail
+    :param background_tasks: Background tasks for sending emails.
+    :type background_tasks: BackgroundTasks
+    :param request: Request object.
+    :type request: Request
+    :param db: Database session.
+    :type db: Session
+    :return: Message instructing the user to check their email for confirmation.
+    :rtype: dict
+    """
     user = await repository_users.get_user_by_email(body.email, db)
 
     if user.confirmed:
