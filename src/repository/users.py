@@ -29,7 +29,7 @@ async def create_user(body: UserModel, db: Session) -> User:
     :return: User
     :rtype: User
     """
-    new_user = User(**body.dict(), avatar=None)
+    new_user = User(**body.model_dump(), avatar=None)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)

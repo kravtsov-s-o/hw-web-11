@@ -17,7 +17,7 @@ async def signup(body: UserModel, background_tasks: BackgroundTasks, request: Re
     """
     Registration user
 
-    :param body: User model
+    :param body: User data
     :type body: UserModel
     :param background_tasks: BackgroundTask
     :type background_tasks: BackgroundTask
